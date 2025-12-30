@@ -3,6 +3,7 @@ import path from "path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+  base: "/tma-travel-results/",
   plugins: [react()],
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
@@ -51,7 +52,7 @@ export default defineConfig({
   },
   build: {
     target: "esnext",
-    outDir: "build",
+    outDir: "docs",
   },
   server: {
     port: 3000,
