@@ -58,7 +58,7 @@ export function TravelRecap() {
 
         {/* Countries Grid */}
         <div className="flex-1 px-4 py-2 overflow-hidden min-h-0 flex">
-          <div className="grid grid-cols-3 gap-1.5 w-full h-fit max-h-full my-auto">
+          <div className="grid grid-cols-3 gap-1.5 w-full h-full content-center">
             {travels.map((travel, index) => (
               <div
                 key={index}
