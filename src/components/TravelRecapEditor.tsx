@@ -114,11 +114,11 @@ export function TravelInput({
                     <th className="text-left py-1.5 px-1 text-sm font-semibold text-gray-700">
                       Country
                     </th>
-                    <th className="text-left py-1.5 px-1 text-sm font-semibold text-gray-700 w-28">
-                      Month From
+                    <th className="text-left py-1.5 px-1 text-sm font-semibold text-gray-700">
+                      From
                     </th>
-                    <th className="text-left py-1.5 px-1 text-sm font-semibold text-gray-700 w-28">
-                      Month To
+                    <th className="text-left py-1.5 px-1 text-sm font-semibold text-gray-700">
+                      To
                     </th>
                     <th className="w-12"></th>
                   </tr>
@@ -149,7 +149,7 @@ export function TravelInput({
                           ))}
                         </select>
                       </td>
-                      <td className="py-1.5 px-1 w-28">
+                      <td className="py-1.5 px-1">
                         <select
                           value={travel.monthFrom}
                           onChange={(e) =>
@@ -165,7 +165,7 @@ export function TravelInput({
                           ))}
                         </select>
                       </td>
-                      <td className="py-1.5 px-1 w-28">
+                      <td className="py-1.5 px-1">
                         <select
                           value={travel.monthTo}
                           onChange={(e) =>
