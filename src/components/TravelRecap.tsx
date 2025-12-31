@@ -3,7 +3,7 @@ import { ArrowLeft, MapPin, Share2, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { TG_APP_LINK } from "../constants";
 import { BasedInData, TravelEntry } from "../types";
-import { uploadImageToCloudinary } from "../utils/cloudinary";
+import { uploadImageToCloudinary } from "../utils/imageUpload";
 import {
   isTelegramWebApp,
   shareToStory,
@@ -27,6 +27,7 @@ export function TravelRecap({
   const recapRef = useRef<HTMLDivElement>(null);
   const currentTheme = themes[theme];
   const [isTelegram, setIsTelegram] = useState(false);
+  const hasImageUploadKey = !!import.meta.env.VITE_IMGBB_API_KEY;
 
   useEffect(() => {
     const isTG = isTelegramWebApp();
@@ -319,7 +320,7 @@ export function TravelRecap({
               {TG_APP_LINK}
             </div>
             <div className="flex gap-2 exclude-from-capture">
-              {isTelegram && (
+              {hasImageUploadKey && (
                 <button
                   onClick={handleShareToStory}
                   className={`flex-1 bg-gradient-to-r ${currentTheme.button2} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
