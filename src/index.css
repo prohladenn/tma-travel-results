@@ -1862,7 +1862,7 @@ body {
 
 .story-title {
   font-family: Brush Script MT, cursive;
-  font-size: 1.5rem;
+  font-size: clamp(2rem, 4.5vw, 3rem);
   font-weight: bold;
   line-height: 1.2;
 }
@@ -1870,7 +1870,7 @@ body {
 .stat-number {
   color: #ea580c;
   font-family: Brush Script MT, cursive;
-  font-size: 1.5rem;
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
   font-weight: bold;
   line-height: 1;
 }
@@ -1878,7 +1878,7 @@ body {
 .stat-label {
   color: #6b7280;
   margin-top: 0.125rem;
-  font-size: 0.7rem;
+  font-size: clamp(0.85rem, 2.2vw, 1.1rem);
   line-height: 1;
 }
 
@@ -1886,7 +1886,7 @@ body {
   color: #374151;
   text-align: center;
   font-family: Bradley Hand, Comic Sans MS, cursive;
-  font-size: 0.6rem;
+  font-size: clamp(0.85rem, 2.4vw, 1.25rem);
   font-weight: 600;
   line-height: 1.1;
 }
@@ -1894,15 +1894,29 @@ body {
 .month-label {
   color: #9ca3af;
   text-align: center;
-  font-size: 0.5rem;
+  font-size: clamp(0.75rem, 2vw, 1rem);
   line-height: 1;
 }
 
 .based-country {
   color: #374151;
   font-family: Bradley Hand, Comic Sans MS, cursive;
-  font-size: 0.85rem;
+  font-size: clamp(1.1rem, 2.8vw, 1.6rem);
   font-weight: 600;
+}
+
+.recap-emoji {
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  line-height: 1;
+}
+
+.based-label {
+  font-size: clamp(0.9rem, 2.2vw, 1.15rem);
+}
+
+.based-flag {
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  line-height: 1;
 }
 
 @property --tw-scale-x {

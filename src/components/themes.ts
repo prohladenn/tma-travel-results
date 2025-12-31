@@ -1,4 +1,10 @@
-import { ThemeType } from "../App";
+export type ThemeType =
+  | "sunset"
+  | "ocean"
+  | "forest"
+  | "purple"
+  | "midnight"
+  | "coral";
 
 export interface Theme {
   background: string;
@@ -12,6 +18,13 @@ export interface Theme {
   button1: string;
   button2: string;
   accentColor: string;
+}
+
+export interface ThemeOption {
+  id: ThemeType;
+  name: string;
+  gradient: string;
+  emoji: string;
 }
 
 export const themes: Record<ThemeType, Theme> = {
@@ -94,3 +107,42 @@ export const themes: Record<ThemeType, Theme> = {
     accentColor: "text-rose-600",
   },
 };
+
+export const themeOptions: ThemeOption[] = [
+  {
+    id: "sunset",
+    name: "Sunset Vibes",
+    gradient: "from-orange-400 via-rose-400 to-pink-500",
+    emoji: "🌅",
+  },
+  {
+    id: "ocean",
+    name: "Ocean Breeze",
+    gradient: "from-cyan-400 via-blue-400 to-indigo-500",
+    emoji: "🌊",
+  },
+  {
+    id: "forest",
+    name: "Forest Green",
+    gradient: "from-emerald-400 via-green-400 to-teal-500",
+    emoji: "🌲",
+  },
+  {
+    id: "purple",
+    name: "Purple Dream",
+    gradient: "from-purple-400 via-fuchsia-400 to-pink-500",
+    emoji: "💜",
+  },
+  {
+    id: "midnight",
+    name: "Midnight Sky",
+    gradient: "from-slate-700 via-indigo-700 to-purple-800",
+    emoji: "🌙",
+  },
+  {
+    id: "coral",
+    name: "Coral Sunset",
+    gradient: "from-rose-300 via-orange-300 to-amber-400",
+    emoji: "🪸",
+  },
+];

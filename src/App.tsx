@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { TravelRecap } from "./components/TravelRecap";
 import { TravelData, TravelInput } from "./components/TravelRecapEditor";
-
-export type ThemeType =
-  | "sunset"
-  | "ocean"
-  | "forest"
-  | "purple"
-  | "midnight"
-  | "coral";
+import { ThemeType } from "./components/themes";
 
 export default function App() {
   const [showRecap, setShowRecap] = useState(false);
