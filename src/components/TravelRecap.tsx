@@ -1,4 +1,4 @@
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 import { ArrowLeft, MapPin, Share2 } from "lucide-react";
 import { useRef } from "react";
 import { themes, ThemeType } from "./themes";
@@ -40,11 +40,16 @@ export function TravelRecap({
   const generateImage = async () => {
     if (!recapRef.current) return null;
 
+    // Wait a bit for styles to be fully applied
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     const canvas = await html2canvas(recapRef.current, {
       scale: 2,
       backgroundColor: theme === "midnight" ? "#0f172a" : "#ffffff",
       useCORS: true,
       logging: false,
+      allowTaint: false,
+      foreignObjectRendering: false,
       ignoreElements: (element) => {
         // Exclude the back button and action buttons from the capture
         return (
@@ -122,9 +127,9 @@ export function TravelRecap({
           <div
             className={`bg-gradient-to-r ${currentTheme.header} px-4 py-3 text-center text-white relative overflow-hidden`}
           >
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-1 left-1 text-3xl">✈️</div>
-              <div className="absolute bottom-1 right-1 text-3xl">🌍</div>
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-1 left-1 text-4xl">✈️</div>
+              <div className="absolute bottom-1 right-1 text-4xl">🌍</div>
             </div>
             <div className="relative">
               <div className="recap-emoji mb-1">✈️</div>
@@ -139,16 +144,40 @@ export function TravelRecap({
             } ${theme === "midnight" ? "text-gray-200" : ""}`}
           >
             <div className="text-center">
-              <div className="stat-number">{uniqueCountries}</div>
-              <div className="stat-label">countries</div>
+              <div className={`stat-number ${currentTheme.accentColor}`}>
+                {uniqueCountries}
+              </div>
+              <div
+                className={`stat-label ${
+                  theme === "midnight" ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                countries
+              </div>
             </div>
             <div className="text-center">
-              <div className="stat-number">{travels.length}</div>
-              <div className="stat-label">trips</div>
+              <div className={`stat-number ${currentTheme.accentColor}`}>
+                {travels.length}
+              </div>
+              <div
+                className={`stat-label ${
+                  theme === "midnight" ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                trips
+              </div>
             </div>
             <div className="text-center">
-              <div className="stat-number">{monthsOfTravel}</div>
-              <div className="stat-label">months</div>
+              <div className={`stat-number ${currentTheme.accentColor}`}>
+                {monthsOfTravel}
+              </div>
+              <div
+                className={`stat-label ${
+                  theme === "midnight" ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
+                months
+              </div>
             </div>
           </div>
 
@@ -163,17 +192,23 @@ export function TravelRecap({
               {travels.map((travel, index) => (
                 <div
                   key={index}
-                  className={`bg-gradient-to-br ${
-                    currentTheme.cardBg
-                  } rounded-xl p-2 shadow-sm border ${
-                    currentTheme.cardBorder
-                  } flex flex-col items-center justify-center h-full ${
-                    theme === "midnight" ? "text-gray-200" : ""
-                  }`}
+                  className={`bg-gradient-to-br ${currentTheme.cardBg} rounded-xl p-2.5 shadow-md border ${currentTheme.cardBorder} flex flex-col items-center justify-center h-full gap-0.5`}
                 >
-                  <div className="text-xl leading-none">{travel.flag}</div>
-                  <div className="country-name">{travel.country}</div>
-                  <div className="month-label">{travel.month}</div>
+                  <div className="text-2xl leading-none">{travel.flag}</div>
+                  <div
+                    className={`country-name ${
+                      theme === "midnight" ? "text-gray-200" : "text-gray-700"
+                    }`}
+                  >
+                    {travel.country}
+                  </div>
+                  <div
+                    className={`month-label ${
+                      theme === "midnight" ? "text-gray-400" : "text-gray-400"
+                    }`}
+                  >
+                    {travel.month}
+                  </div>
                 </div>
               ))}
             </div>
@@ -191,11 +226,19 @@ export function TravelRecap({
               <MapPin
                 className={`size-3 ${currentTheme.accentColor} flex-shrink-0`}
               />
-              <span className="based-label text-gray-600 leading-none">
+              <span
+                className={`based-label leading-none ${
+                  theme === "midnight" ? "text-gray-400" : "text-gray-600"
+                }`}
+              >
                 Based in
               </span>
               <span className="based-flag leading-none">{basedIn.flag}</span>
-              <span className="based-country leading-none">
+              <span
+                className={`based-country leading-none ${
+                  theme === "midnight" ? "text-gray-200" : "text-gray-700"
+                }`}
+              >
                 {basedIn.country}
               </span>
             </div>

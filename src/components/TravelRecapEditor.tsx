@@ -111,13 +111,13 @@ export function TravelInput({
               <table className="w-full">
                 <thead>
                   <tr className="border-b-2 border-gray-200">
-                    <th className="text-left py-1.5 px-1 text-sm font-semibold text-gray-700">
+                    <th className="text-left py-1 px-1 text-sm font-semibold text-gray-700">
                       Country
                     </th>
-                    <th className="text-left py-1.5 px-1 text-sm font-semibold text-gray-700">
+                    <th className="text-left py-1 px-1 text-sm font-semibold text-gray-700">
                       From
                     </th>
-                    <th className="text-left py-1.5 px-1 text-sm font-semibold text-gray-700">
+                    <th className="text-left py-1 px-1 text-sm font-semibold text-gray-700">
                       To
                     </th>
                     <th className="w-12"></th>
@@ -129,7 +129,7 @@ export function TravelInput({
                       key={index}
                       className="hover:bg-gray-50 transition-colors"
                     >
-                      <td className="py-1.5 px-1">
+                      <td className="py-1 px-1">
                         <select
                           value={travel.country}
                           onChange={(e) =>
@@ -149,7 +149,7 @@ export function TravelInput({
                           ))}
                         </select>
                       </td>
-                      <td className="py-1.5 px-1">
+                      <td className="py-1 px-1">
                         <select
                           value={travel.monthFrom}
                           onChange={(e) =>
@@ -165,7 +165,7 @@ export function TravelInput({
                           ))}
                         </select>
                       </td>
-                      <td className="py-1.5 px-1">
+                      <td className="py-1 px-1">
                         <select
                           value={travel.monthTo}
                           onChange={(e) =>
@@ -181,7 +181,7 @@ export function TravelInput({
                           ))}
                         </select>
                       </td>
-                      <td className="py-1.5 px-1 text-right">
+                      <td className="py-1 px-1 text-right">
                         <button
                           onClick={() => removeTravel(index)}
                           className="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-colors inline-flex"

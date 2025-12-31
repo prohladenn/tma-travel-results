@@ -26,6 +26,7 @@ pnpm-debug.log*
 .idea/
 
 # AI
+.github/copilot-instructions.md
 AGENTS.md
 combine-code.sh
 combined-code.txt
