@@ -118,14 +118,24 @@ export function TravelRecap({
         "bytes"
       );
 
-      // Telegram Story accepts data URLs directly
+      // Convert data URL to blob URL for Telegram Story (requires HTTPS URL)
+      const res = await fetch(imageData);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      console.log("[TravelRecap] Blob URL created:", blobUrl);
+
       const caption = `My 2025 travels: ${uniqueCountries} countries, ${travels.length} trips! ✈️🌍`;
 
-      shareToStory(imageData, caption, {
+      shareToStory(blobUrl, caption, {
         url: "https://t.me/tma_travel_recap_bot/app",
         name: "Create Your Recap",
       });
       console.log("[TravelRecap] shareToStory called successfully");
+
+      // Clean up blob URL after a delay to ensure Telegram has processed it
+      setTimeout(() => {
+        URL.revokeObjectURL(blobUrl);
+      }, 5000);
 
       triggerHaptic("notification", undefined, "success");
     } catch (error) {

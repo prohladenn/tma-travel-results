@@ -14,9 +14,9 @@ export function isTelegramWebApp(): boolean {
 
 /**
  * Shares content to Telegram Story
- * @param mediaUrl - URL of the media to share (must be accessible)
+ * @param mediaUrl - HTTPS URL or blob URL of the media to share
  * @param text - Optional caption text (0-200 chars for regular users, 0-2048 for premium)
- * @param widgetLink - Optional widget link object
+ * @param widgetLink - Optional widget link object with url and optional name (text label)
  */
 export function shareToStory(
   mediaUrl: string,
