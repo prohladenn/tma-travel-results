@@ -1,7 +1,9 @@
 import html2canvas from "html2canvas-pro";
 import { ArrowLeft, MapPin, Share2, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { TG_APP_LINK } from "../constants";
 import { BasedInData, TravelEntry } from "../types";
+import { uploadImageToCloudinary } from "../utils/cloudinary";
 import {
   isTelegramWebApp,
   shareToStory,
@@ -83,7 +85,7 @@ export function TravelRecap({
         await navigator.share({
           files: [file],
           title: "2025 Travel Recap",
-          text: "Check out my 2025 travel recap! Create yours: https://t.me/tma_travel_recap_bot/app",
+          text: `Check out my 2025 travel recap!\nCreate yours: https://${TG_APP_LINK}`,
         });
       } catch (error) {
         // User cancelled share
@@ -118,24 +120,25 @@ export function TravelRecap({
         "bytes"
       );
 
-      // Convert data URL to blob URL for Telegram Story (requires HTTPS URL)
+      // Convert data URL to blob
       const res = await fetch(imageData);
       const blob = await res.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      console.log("[TravelRecap] Blob URL created:", blobUrl);
+      console.log("[TravelRecap] Blob created:", {
+        size: blob.size,
+        type: blob.type,
+      });
+
+      // Upload to Cloudinary to get HTTPS URL
+      const imageUrl = await uploadImageToCloudinary(blob);
+      console.log("[TravelRecap] Image uploaded, URL:", imageUrl);
 
       const caption = `My 2025 travels: ${uniqueCountries} countries, ${travels.length} trips! ✈️🌍`;
 
-      shareToStory(blobUrl, caption, {
-        url: "https://t.me/tma_travel_recap_bot/app",
+      shareToStory(imageUrl, caption, {
+        url: TG_APP_LINK,
         name: "Create Your Recap",
       });
       console.log("[TravelRecap] shareToStory called successfully");
-
-      // Clean up blob URL after a delay to ensure Telegram has processed it
-      setTimeout(() => {
-        URL.revokeObjectURL(blobUrl);
-      }, 5000);
 
       triggerHaptic("notification", undefined, "success");
     } catch (error) {
@@ -307,6 +310,13 @@ export function TravelRecap({
               >
                 {basedIn.country}
               </span>
+            </div>
+            <div
+              className={`text-center text-xs mt-1.5 mb-2 ${
+                theme === "midnight" ? "text-gray-400" : "text-gray-500"
+              }`}
+            >
+              {TG_APP_LINK}
             </div>
             <div className="flex gap-2 exclude-from-capture">
               {isTelegram && (
