@@ -127,9 +127,27 @@ export function TravelRecap({
           <div
             className={`bg-gradient-to-r ${currentTheme.header} px-4 py-3 text-center text-white relative overflow-hidden`}
           >
-            <div className="absolute inset-0 opacity-20">
-              <div className="absolute top-1 left-1 text-4xl">✈️</div>
-              <div className="absolute bottom-1 right-1 text-4xl">🌍</div>
+            <div className="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
+              <div className="w-full">
+                <div className="grid grid-cols-7 gap-4 text-3xl mb-1">
+                  <div>✈️</div>
+                  <div>🌍</div>
+                  <div>🗺️</div>
+                  <div> </div>
+                  <div>🌍</div>
+                  <div>🗺️</div>
+                  <div>✈️</div>
+                </div>
+                <div className="grid grid-cols-7 gap-4 text-3xl">
+                  <div>🗺️</div>
+                  <div> </div>
+                  <div> </div>
+                  <div> </div>
+                  <div> </div>
+                  <div> </div>
+                  <div>🗺️</div>
+                </div>
+              </div>
             </div>
             <div className="relative">
               <div className="recap-emoji mb-1">✈️</div>
