@@ -31,11 +31,13 @@ export function TravelRecap({
 
   useEffect(() => {
     const isTG = isTelegramWebApp();
-    if (import.meta.env.DEV) {
-      console.log("[TravelRecap] Telegram environment detected:", isTG);
-    }
+    console.log("[TravelRecap] Environment check:", {
+      isTelegram: isTG,
+      hasImageUploadKey,
+      showStoryButton: isTG && hasImageUploadKey,
+    });
     setIsTelegram(isTG);
-  }, []);
+  }, [hasImageUploadKey]);
 
   // Calculate unique countries
   const uniqueCountries = new Set(travels.map((t) => t.country)).size;
