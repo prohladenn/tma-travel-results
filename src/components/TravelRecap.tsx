@@ -1,6 +1,11 @@
 import html2canvas from "html2canvas-pro";
-import { ArrowLeft, MapPin, Share2 } from "lucide-react";
-import { useRef } from "react";
+import { ArrowLeft, MapPin, Share2, Sparkles } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  isTelegramWebApp,
+  shareToStory,
+  triggerHaptic,
+} from "../utils/telegram";
 import { themes, ThemeType } from "./themes";
 
 interface TravelEntry {
@@ -29,6 +34,11 @@ export function TravelRecap({
 }: TravelRecapProps) {
   const recapRef = useRef<HTMLDivElement>(null);
   const currentTheme = themes[theme];
+  const [isTelegram, setIsTelegram] = useState(false);
+
+  useEffect(() => {
+    setIsTelegram(isTelegramWebApp());
+  }, []);
 
   // Calculate unique countries
   const uniqueCountries = new Set(travels.map((t) => t.country)).size;
@@ -93,6 +103,32 @@ export function TravelRecap({
       link.href = blobUrl;
       link.click();
       URL.revokeObjectURL(blobUrl);
+    }
+  };
+
+  const handleShareToStory = async () => {
+    try {
+      triggerHaptic("impact", "light");
+
+      const imageData = await generateImage();
+      if (!imageData) return;
+
+      // Convert data URL to blob and create object URL
+      const res = await fetch(imageData);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      // For Telegram Story, we need a publicly accessible URL
+      // In production, you would upload to a server first
+      // For now, we'll use the blob URL which may work in Telegram
+      const caption = `My 2025 travels: ${uniqueCountries} countries, ${travels.length} trips! ✈️🌍`;
+
+      shareToStory(blobUrl, caption);
+
+      triggerHaptic("notification", undefined, "success");
+    } catch (error) {
+      console.error("Failed to share to story:", error);
+      triggerHaptic("notification", undefined, "error");
     }
   };
 
@@ -260,13 +296,28 @@ export function TravelRecap({
                 {basedIn.country}
               </span>
             </div>
-            <button
-              onClick={handleShare}
-              className={`w-full bg-gradient-to-r ${currentTheme.button1} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 exclude-from-capture`}
-            >
-              <Share2 className="size-4" />
-              Share
-            </button>
+            <div className="flex gap-2 exclude-from-capture">
+              {isTelegram && (
+                <button
+                  onClick={handleShareToStory}
+                  className={`flex-1 bg-gradient-to-r ${currentTheme.button2} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
+                >
+                  <Sparkles className="size-4" />
+                  Story
+                </button>
+              )}
+              <button
+                onClick={handleShare}
+                className={`${
+                  isTelegram ? "flex-1" : "w-full"
+                } bg-gradient-to-r ${
+                  currentTheme.button1
+                } text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
+              >
+                <Share2 className="size-4" />
+                Share
+              </button>
+            </div>
           </div>
         </div>
       </div>
