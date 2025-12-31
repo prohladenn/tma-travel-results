@@ -4,12 +4,12 @@ import { postEvent } from "@tma.js/sdk";
  * Checks if the app is running inside Telegram Mini App
  */
 export function isTelegramWebApp(): boolean {
-  const result =
+  return (
     typeof window !== "undefined" &&
     (window.parent !== window ||
       "TelegramWebviewProxy" in window ||
-      "external" in window);
-  return result;
+      "external" in window)
+  );
 }
 
 /**

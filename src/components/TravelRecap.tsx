@@ -1,23 +1,13 @@
 import html2canvas from "html2canvas-pro";
 import { ArrowLeft, MapPin, Share2, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { BasedInData, TravelEntry } from "../types";
 import {
   isTelegramWebApp,
   shareToStory,
   triggerHaptic,
 } from "../utils/telegram";
 import { themes, ThemeType } from "./themes";
-
-interface TravelEntry {
-  country: string;
-  flag: string;
-  month: string;
-}
-
-interface BasedInData {
-  country: string;
-  flag: string;
-}
 
 interface TravelRecapProps {
   travels: TravelEntry[];
@@ -38,7 +28,9 @@ export function TravelRecap({
 
   useEffect(() => {
     const isTG = isTelegramWebApp();
-    console.log("[TravelRecap] Telegram environment detected:", isTG);
+    if (import.meta.env.DEV) {
+      console.log("[TravelRecap] Telegram environment detected:", isTG);
+    }
     setIsTelegram(isTG);
   }, []);
 
@@ -94,8 +86,10 @@ export function TravelRecap({
           text: "Check out my 2025 travel recap! Create yours: https://t.me/tma_travel_recap_bot/app",
         });
       } catch (error) {
-        // User cancelled
-        console.log("Share cancelled");
+        // User cancelled share
+        if (import.meta.env.DEV) {
+          console.log("Share cancelled");
+        }
       }
     } else {
       // Fallback to download if share is not supported

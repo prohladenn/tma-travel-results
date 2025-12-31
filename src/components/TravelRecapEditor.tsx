@@ -1,18 +1,9 @@
 import { Plus, Trash2 } from "lucide-react";
-import { COUNTRIES, COUNTRIES_BY_REGION, MONTHS } from "../data/countries";
+import { COUNTRIES } from "../data/countries";
+import { BasedInData, TravelData } from "../types";
 import { ThemeType, themeOptions } from "./themes";
-
-export interface TravelData {
-  country: string;
-  flag: string;
-  monthFrom: string;
-  monthTo: string;
-}
-
-export interface BasedInData {
-  country: string;
-  flag: string;
-}
+import { CountrySelect } from "./ui/CountrySelect";
+import { MonthSelect } from "./ui/MonthSelect";
 
 interface TravelInputProps {
   travels: TravelData[];
@@ -87,21 +78,11 @@ export function TravelInput({
               <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
                 Based in
               </label>
-              <select
+              <CountrySelect
                 value={basedIn.country}
-                onChange={(e) => updateBasedIn(e.target.value)}
+                onChange={updateBasedIn}
                 className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                {COUNTRIES_BY_REGION.map((region) => (
-                  <optgroup key={region.region} label={region.region}>
-                    {region.countries.map((country) => (
-                      <option key={country.name} value={country.name}>
-                        {country.flag} {country.name}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
+              />
             </div>
           </div>
 
@@ -130,56 +111,31 @@ export function TravelInput({
                       className="hover:bg-gray-50 transition-colors"
                     >
                       <td className="py-1 px-1">
-                        <select
+                        <CountrySelect
                           value={travel.country}
-                          onChange={(e) =>
-                            updateTravel(index, "country", e.target.value)
+                          onChange={(value) =>
+                            updateTravel(index, "country", value)
                           }
                           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        >
-                          <option value="">Select country</option>
-                          {COUNTRIES_BY_REGION.map((region) => (
-                            <optgroup key={region.region} label={region.region}>
-                              {region.countries.map((country) => (
-                                <option key={country.name} value={country.name}>
-                                  {country.flag} {country.name}
-                                </option>
-                              ))}
-                            </optgroup>
-                          ))}
-                        </select>
+                        />
                       </td>
                       <td className="py-1 px-1">
-                        <select
+                        <MonthSelect
                           value={travel.monthFrom}
-                          onChange={(e) =>
-                            updateTravel(index, "monthFrom", e.target.value)
+                          onChange={(value) =>
+                            updateTravel(index, "monthFrom", value)
                           }
                           className="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm text-gray-600 bg-white/70 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                        >
-                          <option value="">Select month</option>
-                          {MONTHS.map((month) => (
-                            <option key={month} value={month}>
-                              {month}
-                            </option>
-                          ))}
-                        </select>
+                        />
                       </td>
                       <td className="py-1 px-1">
-                        <select
+                        <MonthSelect
                           value={travel.monthTo}
-                          onChange={(e) =>
-                            updateTravel(index, "monthTo", e.target.value)
+                          onChange={(value) =>
+                            updateTravel(index, "monthTo", value)
                           }
                           className="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm text-gray-600 bg-white/70 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                        >
-                          <option value="">Select month</option>
-                          {MONTHS.map((month) => (
-                            <option key={month} value={month}>
-                              {month}
-                            </option>
-                          ))}
-                        </select>
+                        />
                       </td>
                       <td className="py-1 px-1 text-right">
                         <button
@@ -241,7 +197,7 @@ export function TravelInput({
               onClick={onGenerate}
               disabled={
                 travels.length === 0 ||
-                travels.some((t) => !t.country || !t.monthFrom)
+                travels.some((t) => !t.country || !t.monthFrom || !t.monthTo)
               }
               className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white py-2.5 rounded-xl shadow-lg transition-all duration-200"
             >
