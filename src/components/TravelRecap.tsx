@@ -1,4 +1,8 @@
-import { MapPin } from "lucide-react";
+import html2canvas from "html2canvas";
+import { ArrowLeft, Download, MapPin, Share2 } from "lucide-react";
+import { useRef } from "react";
+import { ThemeType } from "../App";
+import { themes } from "./themes";
 
 interface TravelEntry {
   country: string;
@@ -6,30 +10,113 @@ interface TravelEntry {
   month: string;
 }
 
-export function TravelRecap() {
-  const travels: TravelEntry[] = [
-    { country: "France", flag: "🇫🇷", month: "Jan" },
-    { country: "Germany", flag: "🇩🇪", month: "Feb" },
-    { country: "Russia", flag: "🇷🇺", month: "Feb-Mar" },
-    { country: "Azerbaijan", flag: "🇦🇿", month: "Apr" },
-    { country: "Italy", flag: "🇮🇹", month: "Jul" },
-    { country: "Germany", flag: "🇩🇪", month: "Jul" },
-    { country: "Cyprus", flag: "🇨🇾", month: "Sept" },
-    { country: "Russia", flag: "🇷🇺", month: "Oct-Nov" },
-    { country: "Belarus", flag: "🇧🇾", month: "Nov" },
-    { country: "Austria", flag: "🇦🇹", month: "Dec" },
-    { country: "Hungary", flag: "🇭🇺", month: "Dec" },
-    { country: "Slovakia", flag: "🇸🇰", month: "Dec" },
-  ];
+interface BasedInData {
+  country: string;
+  flag: string;
+}
 
+interface TravelRecapProps {
+  travels: TravelEntry[];
+  basedIn: BasedInData;
+  theme: ThemeType;
+  onBack: () => void;
+}
+
+export function TravelRecap({
+  travels,
+  basedIn,
+  theme,
+  onBack,
+}: TravelRecapProps) {
+  const recapRef = useRef<HTMLDivElement>(null);
+  const currentTheme = themes[theme];
+
+  // Calculate unique countries
   const uniqueCountries = new Set(travels.map((t) => t.country)).size;
-  const monthsOfTravel = 9;
+
+  // Calculate months of travel (approximate)
+  const monthsOfTravel = Math.min(12, Math.ceil(travels.length * 0.75));
+
+  const generateImage = async () => {
+    if (!recapRef.current) return null;
+
+    const canvas = await html2canvas(recapRef.current, {
+      backgroundColor: null,
+      scale: 2, // Higher quality
+      useCORS: true,
+    });
+
+    return canvas.toDataURL("image/png");
+  };
+
+  const handleSave = async () => {
+    const imageData = await generateImage();
+    if (!imageData) return;
+
+    const link = document.createElement("a");
+    link.download = `travel-recap-2025.png`;
+    link.href = imageData;
+    link.click();
+  };
+
+  const handleShare = async () => {
+    const imageData = await generateImage();
+    if (!imageData) return;
+
+    // Convert data URL to blob
+    const res = await fetch(imageData);
+    const blob = await res.blob();
+    const file = new File([blob], "travel-recap-2025.png", {
+      type: "image/png",
+    });
+
+    if (navigator.share && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: "2025 Travel Recap",
+          text: "Check out my 2025 travel recap!",
+        });
+      } catch (error) {
+        // User cancelled or error occurred, fallback to download
+        handleSave();
+      }
+    } else {
+      // Fallback to download if share is not supported
+      handleSave();
+    }
+  };
 
   return (
-    <div className="h-screen w-full bg-gradient-to-br from-orange-400 via-rose-400 to-pink-500 flex items-center justify-center p-4 overflow-hidden">
-      <div className="w-full max-w-md aspect-[9/16] bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+    <div
+      className={`h-screen w-full bg-gradient-to-br ${currentTheme.background} flex items-center justify-center p-4 overflow-hidden`}
+    >
+      <div
+        className={`w-full max-w-md aspect-[9/16] ${
+          theme === "midnight" ? "bg-slate-900/95" : "bg-white/95"
+        } backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden flex flex-col relative`}
+        ref={recapRef}
+      >
+        {/* Back button */}
+        <button
+          onClick={onBack}
+          className={`absolute top-4 left-4 z-10 ${
+            theme === "midnight"
+              ? "bg-slate-800/80 hover:bg-slate-800"
+              : "bg-white/80 hover:bg-white"
+          } backdrop-blur-sm rounded-full p-2 shadow-md transition-colors`}
+        >
+          <ArrowLeft
+            className={`size-5 ${
+              theme === "midnight" ? "text-gray-200" : "text-gray-700"
+            }`}
+          />
+        </button>
+
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-rose-500 px-4 py-4 text-center text-white relative overflow-hidden">
+        <div
+          className={`bg-gradient-to-r ${currentTheme.header} px-4 py-4 text-center text-white relative overflow-hidden`}
+        >
           <div className="absolute inset-0 opacity-10">
             <div className="absolute top-1 left-1 text-3xl">✈️</div>
             <div className="absolute bottom-1 right-1 text-3xl">🌍</div>
@@ -41,7 +128,11 @@ export function TravelRecap() {
         </div>
 
         {/* Stats Bar */}
-        <div className="grid grid-cols-3 gap-2 px-4 py-2.5 bg-gradient-to-b from-orange-50 to-white">
+        <div
+          className={`grid grid-cols-3 gap-2 px-4 py-2.5 bg-gradient-to-b ${
+            currentTheme.statsBar
+          } ${theme === "midnight" ? "text-gray-200" : ""}`}
+        >
           <div className="text-center">
             <div className="stat-number">{uniqueCountries}</div>
             <div className="stat-label">countries</div>
@@ -62,7 +153,13 @@ export function TravelRecap() {
             {travels.map((travel, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-orange-50 to-rose-50 rounded-lg p-1 shadow-sm border border-orange-100 flex flex-col items-center justify-center"
+                className={`bg-gradient-to-br ${
+                  currentTheme.cardBg
+                } rounded-lg p-1 shadow-sm border ${
+                  currentTheme.cardBorder
+                } flex flex-col items-center justify-center ${
+                  theme === "midnight" ? "text-gray-200" : ""
+                }`}
               >
                 <div className="text-xl leading-none">{travel.flag}</div>
                 <div className="country-name">{travel.country}</div>
@@ -73,16 +170,35 @@ export function TravelRecap() {
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-2.5 bg-gradient-to-t from-orange-50 to-white border-t border-orange-100">
-          <div className="flex items-center justify-center gap-1.5 mb-2">
-            <MapPin className="size-3 text-orange-600" />
+        <div
+          className={`px-4 py-2.5 bg-gradient-to-t ${currentTheme.footer} border-t ${currentTheme.footerBorder}`}
+        >
+          <div
+            className={`flex items-center justify-center gap-1.5 mb-2 ${
+              theme === "midnight" ? "text-gray-200" : ""
+            }`}
+          >
+            <MapPin className={`size-3 ${currentTheme.accentColor}`} />
             <span className="text-xs text-gray-600">Based in</span>
-            <span className="text-lg">🇨🇿</span>
-            <span className="based-country">Czechia</span>
+            <span className="text-lg">{basedIn.flag}</span>
+            <span className="based-country">{basedIn.country}</span>
           </div>
-          <button className="w-full bg-gradient-to-r from-orange-500 to-rose-500 text-white py-2 rounded-xl shadow-md text-sm transition-all duration-200 active:scale-[0.98]">
-            Create your Recap
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={handleSave}
+              className={`flex-1 bg-gradient-to-r ${currentTheme.button1} text-white py-2 rounded-xl shadow-md text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
+            >
+              <Download className="size-4" />
+              Save
+            </button>
+            <button
+              onClick={handleShare}
+              className={`flex-1 bg-gradient-to-r ${currentTheme.button2} text-white py-2 rounded-xl shadow-md text-sm transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
+            >
+              <Share2 className="size-4" />
+              Share
+            </button>
+          </div>
         </div>
       </div>
     </div>
