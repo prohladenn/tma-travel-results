@@ -149,18 +149,3 @@ export const COUNTRIES_BY_REGION: CountryRegion[] = [
     countries: COUNTRIES.slice(97),
   },
 ];
-
-export const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];

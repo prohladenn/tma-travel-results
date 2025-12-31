@@ -41,8 +41,35 @@ export function TravelRecap({
   // Calculate unique countries
   const uniqueCountries = new Set(travels.map((t) => t.country)).size;
 
-  // Calculate months of travel (approximate)
-  const monthsOfTravel = Math.min(12, Math.ceil(travels.length * 0.75));
+  // Calculate months of travel (sum of all month ranges)
+  const monthsOfTravel = Math.min(
+    12,
+    travels.reduce((total, travel) => {
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const fromIndex = months.indexOf(travel.month.split("-")[0]);
+      const toIndex = months.indexOf(
+        travel.month.split("-").pop() || travel.month
+      );
+      const monthCount =
+        toIndex >= fromIndex
+          ? toIndex - fromIndex + 1
+          : 12 - fromIndex + toIndex + 1;
+      return total + monthCount;
+    }, 0)
+  );
   const rowCount = Math.max(1, Math.ceil(travels.length / 3));
 
   const generateImage = async () => {

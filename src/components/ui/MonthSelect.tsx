@@ -1,4 +1,4 @@
-import { MONTHS } from "../../data/countries";
+import { MONTHS } from "../../constants";
 
 interface MonthSelectProps {
   value: string;

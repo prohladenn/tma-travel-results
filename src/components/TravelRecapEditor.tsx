@@ -1,4 +1,5 @@
 import { Plus, Trash2 } from "lucide-react";
+import { MONTHS } from "../constants";
 import { COUNTRIES } from "../data/countries";
 import { BasedInData, TravelData } from "../types";
 import { ThemeType, themeOptions } from "./themes";
@@ -48,6 +49,29 @@ export function TravelInput({
         country: value,
         flag: country?.flag || "",
       };
+    } else if (field === "monthFrom") {
+      // When setting from month, auto-set to month if it's empty or earlier than from
+      const fromIndex = MONTHS.indexOf(value);
+      const toIndex = MONTHS.indexOf(updated[index].monthTo);
+
+      updated[index] = {
+        ...updated[index],
+        monthFrom: value,
+        // Set to month to from month if to is empty or earlier than from
+        monthTo:
+          !updated[index].monthTo || toIndex < fromIndex
+            ? value
+            : updated[index].monthTo,
+      };
+    } else if (field === "monthTo") {
+      // Ensure to month is not earlier than from month
+      const fromIndex = MONTHS.indexOf(updated[index].monthFrom);
+      const toIndex = MONTHS.indexOf(value);
+
+      // If to month is earlier than from month, don't update
+      if (toIndex >= fromIndex || !updated[index].monthFrom) {
+        updated[index] = { ...updated[index], [field]: value };
+      }
     } else {
       updated[index] = { ...updated[index], [field]: value };
     }
