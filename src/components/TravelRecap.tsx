@@ -1,7 +1,7 @@
 import html2canvas from "html2canvas-pro";
 import { ArrowLeft, MapPin, Share2, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { TG_APP_LINK } from "../constants";
+import { MONTHS, TG_APP_LINK } from "../constants";
 import { BasedInData, TravelEntry } from "../types";
 import { uploadImageToCloudinary } from "../utils/imageUpload";
 import {
