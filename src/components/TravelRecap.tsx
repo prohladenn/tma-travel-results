@@ -26,18 +26,16 @@ export function TravelRecap({
 }: TravelRecapProps) {
   const recapRef = useRef<HTMLDivElement>(null);
   const currentTheme = themes[theme];
-  const [isTelegram, setIsTelegram] = useState(false);
-  const hasImageUploadKey = !!import.meta.env.VITE_IMGBB_API_KEY;
+  const [isTelegram, setIsTelegram] = useState<boolean | null>(null);
 
   useEffect(() => {
     const isTG = isTelegramWebApp();
     console.log("[TravelRecap] Environment check:", {
       isTelegram: isTG,
-      hasImageUploadKey,
-      showStoryButton: isTG && hasImageUploadKey,
+      showStoryButton: isTG,
     });
     setIsTelegram(isTG);
-  }, [hasImageUploadKey]);
+  }, []);
 
   // Calculate unique countries
   const uniqueCountries = new Set(travels.map((t) => t.country)).size;
@@ -322,26 +320,30 @@ export function TravelRecap({
               {TG_APP_LINK}
             </div>
             <div className="flex gap-2 exclude-from-capture">
-              {isTelegram && hasImageUploadKey && (
-                <button
-                  onClick={handleShareToStory}
-                  className={`flex-1 bg-gradient-to-r ${currentTheme.button2} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
-                >
-                  <Sparkles className="size-4" />
-                  Story
-                </button>
+              {isTelegram !== null && (
+                <>
+                  {isTelegram && (
+                    <button
+                      onClick={handleShareToStory}
+                      className={`flex-1 bg-gradient-to-r ${currentTheme.button2} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
+                    >
+                      <Sparkles className="size-4" />
+                      Story
+                    </button>
+                  )}
+                  <button
+                    onClick={handleShare}
+                    className={`${
+                      isTelegram ? "flex-1" : "w-full"
+                    } bg-gradient-to-r ${
+                      currentTheme.button1
+                    } text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
+                  >
+                    <Share2 className="size-4" />
+                    Share
+                  </button>
+                </>
               )}
-              <button
-                onClick={handleShare}
-                className={`${
-                  isTelegram ? "flex-1" : "w-full"
-                } bg-gradient-to-r ${
-                  currentTheme.button1
-                } text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
-              >
-                <Share2 className="size-4" />
-                Share
-              </button>
             </div>
           </div>
         </div>

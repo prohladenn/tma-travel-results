@@ -31,7 +31,8 @@ export async function uploadImageToCloudinary(blob: Blob): Promise<string> {
 
   console.log("[ImageUpload] Sending request to imgbb API...");
 
-  const apiKey = import.meta.env.VITE_IMGBB_API_KEY;
+  const apiKey =
+    import.meta.env.VITE_IMGBB_API_KEY || "204e3faa2c6978f3c3a998018a37f23d";
 
   if (!apiKey) {
     console.error("[ImageUpload] API key not configured");
