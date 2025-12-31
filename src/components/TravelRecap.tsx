@@ -41,9 +41,18 @@ export function TravelRecap({
     if (!recapRef.current) return null;
 
     const canvas = await html2canvas(recapRef.current, {
-      backgroundColor: null,
-      scale: 2, // Higher quality
+      scale: 2,
+      backgroundColor: theme === "midnight" ? "#0f172a" : "#ffffff",
       useCORS: true,
+      logging: false,
+      ignoreElements: (element) => {
+        // Exclude the back button and action buttons from the capture
+        return (
+          element.classList?.contains("exclude-from-capture") ||
+          (element.classList?.contains("absolute") &&
+            element.tagName === "BUTTON")
+        );
+      },
     });
 
     return canvas.toDataURL("image/png");
@@ -89,13 +98,13 @@ export function TravelRecap({
 
   return (
     <div
+      ref={recapRef}
       className={`h-screen w-full bg-gradient-to-br ${currentTheme.background} flex items-center justify-center p-4 overflow-hidden`}
     >
       <div
         className={`w-full max-w-md aspect-[9/16] ${
-          theme === "midnight" ? "bg-slate-900/95" : "bg-white/95"
-        } backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden flex flex-col relative`}
-        ref={recapRef}
+          theme === "midnight" ? "bg-slate-900" : "bg-white"
+        } rounded-3xl shadow-2xl overflow-hidden flex flex-col relative`}
       >
         <div className="relative z-10 flex flex-col flex-1">
           {/* Back button */}
@@ -103,9 +112,9 @@ export function TravelRecap({
             onClick={onBack}
             className={`absolute top-4 left-4 z-10 ${
               theme === "midnight"
-                ? "bg-slate-800/80 hover:bg-slate-800"
-                : "bg-white/80 hover:bg-white"
-            } backdrop-blur-sm rounded-full p-2 shadow-md transition-colors`}
+                ? "bg-slate-800 hover:bg-slate-700"
+                : "bg-white hover:bg-gray-50"
+            } rounded-full p-2 shadow-md transition-colors`}
           >
             <ArrowLeft
               className={`size-5 ${
@@ -189,7 +198,7 @@ export function TravelRecap({
               <span className="based-flag">{basedIn.flag}</span>
               <span className="based-country">{basedIn.country}</span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 exclude-from-capture">
               <button
                 onClick={handleSave}
                 className={`flex-1 bg-gradient-to-r ${currentTheme.button1} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
