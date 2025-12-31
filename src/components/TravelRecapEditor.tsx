@@ -123,11 +123,11 @@ export function TravelInput({
                     <th className="w-12"></th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-gray-100">
                   {travels.map((travel, index) => (
                     <tr
                       key={index}
-                      className="border-b border-gray-100 hover:bg-gray-50"
+                      className="hover:bg-gray-50 transition-colors"
                     >
                       <td className="py-1.5 px-1">
                         <select
@@ -135,7 +135,7 @@ export function TravelInput({
                           onChange={(e) =>
                             updateTravel(index, "country", e.target.value)
                           }
-                          className="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
                         >
                           <option value="">Select country</option>
                           {COUNTRIES_BY_REGION.map((region) => (
@@ -155,7 +155,7 @@ export function TravelInput({
                           onChange={(e) =>
                             updateTravel(index, "monthFrom", e.target.value)
                           }
-                          className="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm text-gray-600 bg-white/70 focus:outline-none focus:ring-2 focus:ring-indigo-400"
                         >
                           <option value="">Select month</option>
                           {MONTHS.map((month) => (
@@ -171,7 +171,7 @@ export function TravelInput({
                           onChange={(e) =>
                             updateTravel(index, "monthTo", e.target.value)
                           }
-                          className="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          className="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm text-gray-600 bg-white/70 focus:outline-none focus:ring-2 focus:ring-indigo-400"
                         >
                           <option value="">Select month</option>
                           {MONTHS.map((month) => (
@@ -184,7 +184,7 @@ export function TravelInput({
                       <td className="py-1.5 px-1 text-right">
                         <button
                           onClick={() => removeTravel(index)}
-                          className="text-red-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 transition-colors inline-flex"
+                          className="text-gray-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-colors inline-flex"
                         >
                           <Trash2 className="size-5" />
                         </button>

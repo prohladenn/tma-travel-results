@@ -1,9 +1,16 @@
 # Travel Results Mini App
 
-This is a code bundle for Travel Results Mini App. The original project is available at https://www.figma.com/design/cU6oO8xwKJ6lxI6GSPYjyc/Travel-Results-Mini-App.
+Minimal React + Vite app for generating a travel recap view.
 
-## Running the code
+## Quick Start
 
-Run `npm i` to install the dependencies.
+```bash
+npm i
+npm run dev
+```
 
-Run `npm run dev` to start the development server.
+## Build
+
+```bash
+npm run build
+```

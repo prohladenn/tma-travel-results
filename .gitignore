@@ -24,3 +24,8 @@ pnpm-debug.log*
 # Editor
 .vscode/
 .idea/
+
+# AI
+AGENTS.md
+combine-code.sh
+combined-code.txt
