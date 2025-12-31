@@ -5,22 +5,9 @@ import { ThemeType } from "./components/themes";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { BasedInData, TravelData } from "./types";
 
-const DEFAULT_BASED_IN: BasedInData = { country: "Czechia", flag: "🇨🇿" };
+const DEFAULT_BASED_IN: BasedInData = { country: "", flag: "" };
 const DEFAULT_THEME: ThemeType = "midnight";
-const DEFAULT_TRAVELS: TravelData[] = [
-  { country: "France", flag: "🇫🇷", monthFrom: "Jan", monthTo: "Jan" },
-  { country: "Germany", flag: "🇩🇪", monthFrom: "Feb", monthTo: "Feb" },
-  { country: "Russia", flag: "🇷🇺", monthFrom: "Feb", monthTo: "Mar" },
-  { country: "Azerbaijan", flag: "🇦🇿", monthFrom: "Apr", monthTo: "Apr" },
-  { country: "Italy", flag: "🇮🇹", monthFrom: "Jul", monthTo: "Jul" },
-  { country: "Germany", flag: "🇩🇪", monthFrom: "Jul", monthTo: "Jul" },
-  { country: "Cyprus", flag: "🇨🇾", monthFrom: "Sep", monthTo: "Sep" },
-  { country: "Russia", flag: "🇷🇺", monthFrom: "Oct", monthTo: "Nov" },
-  { country: "Belarus", flag: "🇧🇾", monthFrom: "Nov", monthTo: "Nov" },
-  { country: "Austria", flag: "🇦🇹", monthFrom: "Dec", monthTo: "Dec" },
-  { country: "Hungary", flag: "🇭🇺", monthFrom: "Dec", monthTo: "Dec" },
-  { country: "Slovakia", flag: "🇸🇰", monthFrom: "Dec", monthTo: "Dec" },
-];
+const DEFAULT_TRAVELS: TravelData[] = [];
 
 export default function App() {
   const [showRecap, setShowRecap] = useState(false);
