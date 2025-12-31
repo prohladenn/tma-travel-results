@@ -320,7 +320,7 @@ export function TravelRecap({
               {TG_APP_LINK}
             </div>
             <div className="flex gap-2 exclude-from-capture">
-              {hasImageUploadKey && (
+              {isTelegram && hasImageUploadKey && (
                 <button
                   onClick={handleShareToStory}
                   className={`flex-1 bg-gradient-to-r ${currentTheme.button2} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
