@@ -15,17 +15,13 @@ export function isTelegramWebApp(): boolean {
 /**
  * Shares content to Telegram Story
  * @param mediaUrl - HTTPS URL or blob URL of the media to share
- * @param text - Optional caption text (0-200 chars for regular users, 0-2048 for premium)
- * @param widgetLink - Optional widget link object with url and optional name (text label)
+ * @param text - Optional caption text (max 200 chars for regular users, 2048 for premium)
  */
-export function shareToStory(
-  mediaUrl: string,
-  text?: string,
-  widgetLink?: { url: string; name?: string }
-): void {
+export function shareToStory(mediaUrl: string, text?: string): void {
   console.log("[Telegram] shareToStory called", {
     mediaUrlLength: mediaUrl?.length,
     hasText: !!text,
+    textLength: text?.length,
   });
 
   try {
@@ -34,11 +30,18 @@ export function shareToStory(
     };
 
     if (text) {
-      params.text = text;
-    }
+      // Truncate to 200 chars for regular users (safe limit)
+      const truncatedText =
+        text.length > 200 ? text.substring(0, 197) + "..." : text;
+      params.text = truncatedText;
 
-    if (widgetLink) {
-      params.widget_link = widgetLink;
+      if (text.length > 200) {
+        console.warn(
+          "[Telegram] Caption truncated from",
+          text.length,
+          "to 200 chars"
+        );
+      }
     }
 
     postEvent("web_app_share_to_story", params);

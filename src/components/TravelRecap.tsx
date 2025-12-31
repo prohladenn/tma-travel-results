@@ -27,6 +27,7 @@ export function TravelRecap({
   const recapRef = useRef<HTMLDivElement>(null);
   const currentTheme = themes[theme];
   const [isTelegram, setIsTelegram] = useState<boolean | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     const isTG = isTelegramWebApp();
@@ -108,6 +109,7 @@ export function TravelRecap({
   const handleShareToStory = async () => {
     console.log("[TravelRecap] Share to Story button clicked");
     try {
+      setIsUploading(true);
       triggerHaptic("impact", "light");
 
       const imageData = await generateImage();
@@ -134,17 +136,17 @@ export function TravelRecap({
       console.log("[TravelRecap] Image uploaded, URL:", imageUrl);
 
       const caption = `My 2025 travels: ${uniqueCountries} countries, ${travels.length} trips! ✈️🌍`;
+      console.log("[TravelRecap] Caption length:", caption.length);
 
-      shareToStory(imageUrl, caption, {
-        url: TG_APP_LINK,
-        name: "Create Your Recap",
-      });
+      shareToStory(imageUrl, caption);
       console.log("[TravelRecap] shareToStory called successfully");
 
       triggerHaptic("notification", undefined, "success");
     } catch (error) {
       console.error("[TravelRecap] Failed to share to story:", error);
       triggerHaptic("notification", undefined, "error");
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -325,10 +327,26 @@ export function TravelRecap({
                   {isTelegram && (
                     <button
                       onClick={handleShareToStory}
-                      className={`flex-1 bg-gradient-to-r ${currentTheme.button2} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
+                      disabled={isUploading}
+                      className={`flex-1 bg-gradient-to-r ${
+                        currentTheme.button2
+                      } text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 ${
+                        isUploading
+                          ? "opacity-70 cursor-not-allowed"
+                          : "active:scale-[0.98]"
+                      } flex items-center justify-center gap-2`}
                     >
-                      <Sparkles className="size-4" />
-                      Story
+                      {isUploading ? (
+                        <>
+                          <div className="size-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Uploading...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="size-4" />
+                          Story
+                        </>
+                      )}
                     </button>
                   )}
                   <button
