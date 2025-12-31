@@ -37,7 +37,9 @@ export function TravelRecap({
   const [isTelegram, setIsTelegram] = useState(false);
 
   useEffect(() => {
-    setIsTelegram(isTelegramWebApp());
+    const isTG = isTelegramWebApp();
+    console.log("[TravelRecap] Telegram environment detected:", isTG);
+    setIsTelegram(isTG);
   }, []);
 
   // Calculate unique countries
@@ -89,7 +91,7 @@ export function TravelRecap({
         await navigator.share({
           files: [file],
           title: "2025 Travel Recap",
-          text: "Check out my 2025 travel recap!",
+          text: "Check out my 2025 travel recap! Create yours: https://t.me/tma_travel_recap_bot/app",
         });
       } catch (error) {
         // User cancelled
@@ -107,27 +109,33 @@ export function TravelRecap({
   };
 
   const handleShareToStory = async () => {
+    console.log("[TravelRecap] Share to Story button clicked");
     try {
       triggerHaptic("impact", "light");
 
       const imageData = await generateImage();
-      if (!imageData) return;
+      if (!imageData) {
+        console.error("[TravelRecap] Failed to generate image");
+        return;
+      }
+      console.log(
+        "[TravelRecap] Image generated, size:",
+        imageData.length,
+        "bytes"
+      );
 
-      // Convert data URL to blob and create object URL
-      const res = await fetch(imageData);
-      const blob = await res.blob();
-      const blobUrl = URL.createObjectURL(blob);
-
-      // For Telegram Story, we need a publicly accessible URL
-      // In production, you would upload to a server first
-      // For now, we'll use the blob URL which may work in Telegram
+      // Telegram Story accepts data URLs directly
       const caption = `My 2025 travels: ${uniqueCountries} countries, ${travels.length} trips! ✈️🌍`;
 
-      shareToStory(blobUrl, caption);
+      shareToStory(imageData, caption, {
+        url: "https://t.me/tma_travel_recap_bot/app",
+        name: "Create Your Recap",
+      });
+      console.log("[TravelRecap] shareToStory called successfully");
 
       triggerHaptic("notification", undefined, "success");
     } catch (error) {
-      console.error("Failed to share to story:", error);
+      console.error("[TravelRecap] Failed to share to story:", error);
       triggerHaptic("notification", undefined, "error");
     }
   };

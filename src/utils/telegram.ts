@@ -4,12 +4,12 @@ import { postEvent } from "@tma.js/sdk";
  * Checks if the app is running inside Telegram Mini App
  */
 export function isTelegramWebApp(): boolean {
-  return (
+  const result =
     typeof window !== "undefined" &&
     (window.parent !== window ||
       "TelegramWebviewProxy" in window ||
-      "external" in window)
-  );
+      "external" in window);
+  return result;
 }
 
 /**
@@ -23,6 +23,11 @@ export function shareToStory(
   text?: string,
   widgetLink?: { url: string; name?: string }
 ): void {
+  console.log("[Telegram] shareToStory called", {
+    mediaUrlLength: mediaUrl?.length,
+    hasText: !!text,
+  });
+
   try {
     const params: any = {
       media_url: mediaUrl,
@@ -37,8 +42,9 @@ export function shareToStory(
     }
 
     postEvent("web_app_share_to_story", params);
+    console.log("[Telegram] postEvent completed");
   } catch (error) {
-    console.error("Failed to share to story:", error);
+    console.error("[Telegram] Failed to share to story:", error);
     throw error;
   }
 }
@@ -79,6 +85,6 @@ export function triggerHaptic(
 
     postEvent("web_app_trigger_haptic_feedback", params);
   } catch (error) {
-    console.error("Failed to trigger haptic:", error);
+    console.error("[Telegram] Failed to trigger haptic:", error);
   }
 }
