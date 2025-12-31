@@ -1,5 +1,5 @@
 import html2canvas from "html2canvas";
-import { ArrowLeft, Download, MapPin, Share2 } from "lucide-react";
+import { ArrowLeft, MapPin, Share2 } from "lucide-react";
 import { useRef } from "react";
 import { themes, ThemeType } from "./themes";
 
@@ -58,16 +58,6 @@ export function TravelRecap({
     return canvas.toDataURL("image/png");
   };
 
-  const handleSave = async () => {
-    const imageData = await generateImage();
-    if (!imageData) return;
-
-    const link = document.createElement("a");
-    link.download = `travel-recap-2025.png`;
-    link.href = imageData;
-    link.click();
-  };
-
   const handleShare = async () => {
     const imageData = await generateImage();
     if (!imageData) return;
@@ -87,12 +77,17 @@ export function TravelRecap({
           text: "Check out my 2025 travel recap!",
         });
       } catch (error) {
-        // User cancelled or error occurred, fallback to download
-        handleSave();
+        // User cancelled
+        console.log("Share cancelled");
       }
     } else {
       // Fallback to download if share is not supported
-      handleSave();
+      const blobUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = "travel-recap-2025.png";
+      link.href = blobUrl;
+      link.click();
+      URL.revokeObjectURL(blobUrl);
     }
   };
 
@@ -125,7 +120,7 @@ export function TravelRecap({
 
           {/* Header */}
           <div
-            className={`bg-gradient-to-r ${currentTheme.header} px-4 py-4 text-center text-white relative overflow-hidden`}
+            className={`bg-gradient-to-r ${currentTheme.header} px-4 py-3 text-center text-white relative overflow-hidden`}
           >
             <div className="absolute inset-0 opacity-10">
               <div className="absolute top-1 left-1 text-3xl">✈️</div>
@@ -160,7 +155,7 @@ export function TravelRecap({
           {/* Countries Grid */}
           <div className="flex-1 px-4 py-2 overflow-hidden min-h-0 flex">
             <div
-              className="grid grid-cols-3 gap-1.5 w-full h-full"
+              className="grid grid-cols-3 gap-2 w-full h-full"
               style={{
                 gridTemplateRows: `repeat(${rowCount}, minmax(0, 1fr))`,
               }}
@@ -170,7 +165,7 @@ export function TravelRecap({
                   key={index}
                   className={`bg-gradient-to-br ${
                     currentTheme.cardBg
-                  } rounded-lg p-1 shadow-sm border ${
+                  } rounded-xl p-2 shadow-sm border ${
                     currentTheme.cardBorder
                   } flex flex-col items-center justify-center h-full ${
                     theme === "midnight" ? "text-gray-200" : ""
@@ -193,27 +188,24 @@ export function TravelRecap({
                 theme === "midnight" ? "text-gray-200" : ""
               }`}
             >
-              <MapPin className={`size-3 ${currentTheme.accentColor}`} />
-              <span className="based-label text-gray-600">Based in</span>
-              <span className="based-flag">{basedIn.flag}</span>
-              <span className="based-country">{basedIn.country}</span>
+              <MapPin
+                className={`size-3 ${currentTheme.accentColor} flex-shrink-0`}
+              />
+              <span className="based-label text-gray-600 leading-none">
+                Based in
+              </span>
+              <span className="based-flag leading-none">{basedIn.flag}</span>
+              <span className="based-country leading-none">
+                {basedIn.country}
+              </span>
             </div>
-            <div className="flex gap-2 exclude-from-capture">
-              <button
-                onClick={handleSave}
-                className={`flex-1 bg-gradient-to-r ${currentTheme.button1} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
-              >
-                <Download className="size-4" />
-                Save
-              </button>
-              <button
-                onClick={handleShare}
-                className={`flex-1 bg-gradient-to-r ${currentTheme.button2} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2`}
-              >
-                <Share2 className="size-4" />
-                Share
-              </button>
-            </div>
+            <button
+              onClick={handleShare}
+              className={`w-full bg-gradient-to-r ${currentTheme.button1} text-white py-2 rounded-xl shadow-md text-base transition-all duration-200 active:scale-[0.98] flex items-center justify-center gap-2 exclude-from-capture`}
+            >
+              <Share2 className="size-4" />
+              Share
+            </button>
           </div>
         </div>
       </div>

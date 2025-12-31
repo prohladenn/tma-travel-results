@@ -1,36 +1,37 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `src/` holds all application code.
-- `src/main.tsx` boots the React app and mounts `src/App.tsx`.
-- `src/components/` contains feature components (example: `TravelRecap.tsx`).
+- `src/` contains all application code.
+- `src/main.tsx` bootstraps the React app and mounts `src/App.tsx`.
+- `src/components/` holds feature components (example: `TravelRecap.tsx`).
 - `src/components/ui/` contains reusable UI primitives (Radix-based).
-- `src/styles/` and `src/index.css` hold global styles.
-- `src/guidelines/Guidelines.md` documents design or content guidance.
+- `src/styles/` and `src/index.css` hold global styling and utilities.
+- `src/guidelines/Guidelines.md` documents design/content guidance.
 - `index.html` is the Vite entry template.
+- Assets should live under `src/` and be imported via relative paths.
 
 ## Build, Test, and Development Commands
 - `npm i` installs dependencies.
 - `npm run dev` starts the Vite dev server for local development.
-- `npm run build` creates a production build in `dist/`.
+- `npm run build` generates a production build in `dist/`.
 
 ## Coding Style & Naming Conventions
-- Use TypeScript and React function components (`.tsx`).
-- Indentation is 2 spaces; follow the existing import order and formatting style.
-- Component files use PascalCase (example: `TravelRecap.tsx`).
-- UI primitives live under `src/components/ui/` and should stay small and reusable.
-- No formatter or linter is configured; keep changes minimal and consistent with nearby code.
+- Use TypeScript with React function components (`.tsx`).
+- Indentation is 2 spaces; keep formatting consistent with nearby code.
+- Components use PascalCase (example: `TravelRecapEditor.tsx`).
+- UI primitives live under `src/components/ui/` and should remain small and reusable.
+- No formatter or linter is configured; avoid large reformatting changes.
 
 ## Testing Guidelines
 - No automated test framework is configured yet.
-- Validate changes by running `npm run dev` and checking the relevant screens manually.
+- Manually validate changes by running `npm run dev` and checking the relevant screens.
 - If you add tests, place them alongside components (example: `src/components/TravelRecap.test.tsx`).
 
 ## Commit & Pull Request Guidelines
-- This workspace does not include Git history, so no commit message convention is enforced.
+- Git history is not included in this workspace, so no enforced commit conventions exist.
 - Use short, imperative commit subjects (example: `Add booking summary card`).
-- For pull requests, include a brief description, a list of key changes, and screenshots for UI updates.
+- For pull requests, include a brief description, list key changes, and add screenshots for UI updates.
 
-## Configuration & Assets
-- Environment-specific config is not present; keep any new secrets out of the repo.
-- If you add assets, place them under `src/` and reference them with relative imports.
+## Configuration & Security Notes
+- No environment-specific config is present; keep secrets out of the repo.
+- Prefer explicit, minimal changes and avoid introducing new dependencies unless required.
