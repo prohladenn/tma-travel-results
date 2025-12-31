@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { TravelData, TravelInput } from "./components/TravelInput";
 import { TravelRecap } from "./components/TravelRecap";
+import { TravelData, TravelInput } from "./components/TravelRecapEditor";
 
 export type ThemeType =
   | "sunset"

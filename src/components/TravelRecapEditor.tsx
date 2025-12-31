@@ -147,7 +147,7 @@ export function TravelInput({
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-6">
+    <div className="min-h-screen max-h-screen overflow-y-auto bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <h1 className="text-3xl mb-2 text-center text-gray-800">
@@ -173,9 +173,9 @@ export function TravelInput({
             </select>
           </div>
 
-          <div className="overflow-y-auto overflow-x-hidden mb-4 max-h-[35vh]">
+          <div className="mb-4">
             <table className="w-full">
-              <thead className="sticky top-0 bg-white z-10">
+              <thead>
                 <tr className="border-b-2 border-gray-200">
                   <th className="text-left py-3 px-4 text-gray-700">Country</th>
                   <th className="text-left py-3 px-4 text-gray-700">
@@ -255,6 +255,16 @@ export function TravelInput({
             </table>
           </div>
 
+          <div className="mb-4">
+            <button
+              onClick={addTravel}
+              className="flex items-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-colors"
+            >
+              <Plus className="size-5" />
+              Add Trip
+            </button>
+          </div>
+
           {/* Theme Selection */}
           <div className="mb-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border border-purple-200">
             <label className="block mb-3 text-gray-700">Choose Theme</label>
@@ -283,22 +293,14 @@ export function TravelInput({
             </div>
           </div>
 
-          <div className="flex gap-4">
-            <button
-              onClick={addTravel}
-              className="flex items-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-colors"
-            >
-              <Plus className="size-5" />
-              Add Trip
-            </button>
-
+          <div className="flex">
             <button
               onClick={onGenerate}
               disabled={
                 travels.length === 0 ||
                 travels.some((t) => !t.country || !t.monthFrom)
               }
-              className="flex-1 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white py-3 rounded-xl shadow-lg transition-all duration-200"
+              className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 disabled:from-gray-300 disabled:to-gray-400 disabled:cursor-not-allowed text-white py-3 rounded-xl shadow-lg transition-all duration-200"
             >
               Generate Travel Recap
             </button>
