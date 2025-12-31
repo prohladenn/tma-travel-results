@@ -41,35 +41,30 @@ export function TravelRecap({
   // Calculate unique countries
   const uniqueCountries = new Set(travels.map((t) => t.country)).size;
 
-  // Calculate months of travel (sum of all month ranges)
-  const monthsOfTravel = Math.min(
-    12,
-    travels.reduce((total, travel) => {
-      const months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-      const fromIndex = months.indexOf(travel.month.split("-")[0]);
-      const toIndex = months.indexOf(
-        travel.month.split("-").pop() || travel.month
-      );
-      const monthCount =
-        toIndex >= fromIndex
-          ? toIndex - fromIndex + 1
-          : 12 - fromIndex + toIndex + 1;
-      return total + monthCount;
-    }, 0)
-  );
+  // Calculate unique months of travel
+  const uniqueMonths = new Set<string>();
+  travels.forEach((travel) => {
+    const fromIndex = MONTHS.indexOf(travel.month.split("-")[0]);
+    const toIndex = MONTHS.indexOf(
+      travel.month.split("-").pop() || travel.month
+    );
+
+    if (toIndex >= fromIndex) {
+      // Normal range (e.g., Jan to Mar)
+      for (let i = fromIndex; i <= toIndex; i++) {
+        uniqueMonths.add(MONTHS[i]);
+      }
+    } else {
+      // Wraps around year (e.g., Nov to Jan)
+      for (let i = fromIndex; i < MONTHS.length; i++) {
+        uniqueMonths.add(MONTHS[i]);
+      }
+      for (let i = 0; i <= toIndex; i++) {
+        uniqueMonths.add(MONTHS[i]);
+      }
+    }
+  });
+  const monthsOfTravel = uniqueMonths.size;
   const rowCount = Math.max(1, Math.ceil(travels.length / 3));
 
   const generateImage = async () => {
