@@ -135,7 +135,7 @@ export function TravelRecap({
       const imageUrl = await uploadImageToCloudinary(blob);
       console.log("[TravelRecap] Image uploaded, URL:", imageUrl);
 
-      const caption = `My 2025 travels: ${uniqueCountries} countries, ${travels.length} trips! ✈️🌍`;
+      const caption = `My 2025 travels: ${uniqueCountries} countries, ${travels.length} trips! ✈️🌍\n\nCreate yours: ${TG_APP_LINK}`;
       console.log("[TravelRecap] Caption length:", caption.length);
 
       shareToStory(imageUrl, caption);
